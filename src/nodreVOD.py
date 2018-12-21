@@ -1,6 +1,7 @@
 import keyboard, mouse
 import pyperclip, time
 import random, numpy, threading
+import sys
 
 layout = [['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'backspace'],
           ['tab','q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\'],
@@ -8,7 +9,7 @@ layout = [['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'bac
           ['left shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 'right shift'],
           ['left ctrl', 'windows', 'alt', 'space','space','space','space','space','right alt','menu','right ctrl']
           ]
-amt = 14
+amt = 5
 global lock
 lock = threading.Semaphore(1)
 schlock = threading.Semaphore(1)
@@ -80,6 +81,14 @@ def runMouse(chance):
                 print('ran')
         if not mouse.is_pressed():
             has_moved = False
+def runMouse2(chance):
+    prev_x, prev_y = mouse.get_position()
+    while True:
+        now_x, now_y = mouse.get_position()
+        if abs(now_x-prev_x > 8 and abs(now_y-prev_y) > 5):
+            if (numpy.random.randint(chance) == 1):
+                mouse.right_click()
+        prev_x, prev_y = mouse.get_position()
 
 
 def runClipboard(cooldown):
@@ -110,3 +119,7 @@ time.sleep(.25)
 mouseThread = threading.Thread(target=runMouse, args=(10,))
 #mouseThread.setDaemon(True)
 mouseThread.start()
+
+mouseThread2 = threading.Thread(target=runMouse2, args=(50,))
+#mouseThread.setDaemon(True)
+mouseThread2.start()
