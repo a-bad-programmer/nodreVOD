@@ -1,5 +1,5 @@
 # nodreVOD - pure evil?
-
+![nodreVOD](https://github.com/a-bad-programmer/nodreVOD/blob/master/images/nodrevod.png)
 ## What is nodreVOD?
 nodreVOD exists solely to make your life miserable. Small things that will just ruin your day, a dropped clipboard. A mouse mis-click. A small typo. nodreVOD is evil.
 
