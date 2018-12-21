@@ -17,17 +17,17 @@ excludes = []
 
 #keyboard.remap_key('a', 'right shift')
 def randkey():
-    column = numpy.random.randint(len(layout))
-    #print(layout[column])
-    cell = numpy.random.randint(len(layout[column]))
-    #print(cell)
-    key = layout[column][cell]
-    if key not in excludes:
-        lock.acquire()
-        excludes.append(key)
-        lock.release()
-    else:
-        randkey()
+    while True:
+        column = numpy.random.randint(len(layout))
+        #print(layout[column])
+        cell = numpy.random.randint(len(layout[column]))
+        #print(cell)
+        key = layout[column][cell]
+        if key not in excludes:
+            lock.acquire()
+            excludes.append(key)
+            lock.release()
+            break
     print(key)
     return key
 
@@ -57,6 +57,7 @@ def muck(key):
     return key
 
 def listen():
+
     while True:
         key = muck(randkey())
         while True:
