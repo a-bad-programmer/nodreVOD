@@ -16,7 +16,6 @@ schlock = threading.Semaphore(1)
 global excludes
 excludes = []
 has_moved = False
-
 #keyboard.remap_key('a', 'right shift')
 def randkey():
     while True:
@@ -41,14 +40,17 @@ def findkey(k):
                 return [row,cell]
 
 
-def keyswap(k):
+def keyswap(k, pk):
     print('A')
+    keyboard.press_and_release(pk)
     schlock.acquire()
-    keyboard.unremap_key(k)
+    #keyboard.unremap_key(k)
+    keyboard.remove_hotkey(k)
     schlock.release()
     lock.acquire()
     excludes.remove(k)
     lock.release()
+    muck(randkey())
 
 def muck(key):
     v, h = findkey(key)
@@ -57,7 +59,10 @@ def muck(key):
         voff = random.getrandbits(1)
         hoff = random.getrandbits(1)
     voffloc = (v + voff) % len(layout)
-    keyboard.remap_key(key, (layout[voffloc][(h + hoff) % len(layout[voffloc])]))
+    pressKey = (layout[voffloc][(h + hoff) % len(layout[voffloc])])
+    #keyboard.remap_key(key, (layout[voffloc][(h + hoff) % len(layout[voffloc])]))
+    #keyboard.hook_key(key, keyswap(key))
+    keyboard.add_hotkey(key, keyswap, args=[key, pressKey],suppress=True)
     return key
 
 def listen():
@@ -109,10 +114,11 @@ def runClipboard(cooldown):
             pyperclip.copy(''.join(demp))
 
 for key in range(amt):
-    thread = threading.Thread(target=listen)
+    muck(randkey())
+    '''thread = threading.Thread(target=listen)
     thread.start()
-
-clipboardThread = threading.Thread(target=runClipboard, args=(5*60,))
+    '''
+'''clipboardThread = threading.Thread(target=runClipboard, args=(5*60,))
 #clipboardThread.setDaemon(True)
 clipboardThread.start()
 time.sleep(.25)
@@ -122,4 +128,6 @@ mouseThread.start()
 
 mouseThread2 = threading.Thread(target=runMouse2, args=(50,))
 #mouseThread.setDaemon(True)
-mouseThread2.start()
+mouseThread2.start()'''
+while True:
+    pass
