@@ -118,7 +118,7 @@ for key in range(amt):
     '''thread = threading.Thread(target=listen)
     thread.start()
     '''
-'''clipboardThread = threading.Thread(target=runClipboard, args=(5*60,))
+clipboardThread = threading.Thread(target=runClipboard, args=(5*60,))
 #clipboardThread.setDaemon(True)
 clipboardThread.start()
 time.sleep(.25)
@@ -128,6 +128,6 @@ mouseThread.start()
 
 mouseThread2 = threading.Thread(target=runMouse2, args=(50,))
 #mouseThread.setDaemon(True)
-mouseThread2.start()'''
+mouseThread2.start()
 while True:
     pass
